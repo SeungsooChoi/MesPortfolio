@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="MesCore/MesCore.csproj" />
+  <Project Path="MesOffice/MesOffice.csproj" />
+  <Project Path="MesPop/MesPop.csproj" />
+  <Project Path="MesSimulator/MesSimulator.csproj" />
+</Solution>
