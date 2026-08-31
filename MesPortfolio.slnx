@@ -1,4 +1,7 @@
 <Solution>
+  <Folder Name="/sql/">
+    <File Path="create_tables.sql" />
+  </Folder>
   <Project Path="MesCore/MesCore.csproj" />
   <Project Path="MesOffice/MesOffice.csproj" />
   <Project Path="MesPop/MesPop.csproj" />
