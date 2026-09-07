@@ -1,13 +1,5 @@
-﻿using System.Text;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace MesOffice
 {
@@ -19,6 +11,36 @@ namespace MesOffice
         public MainWindow()
         {
             InitializeComponent();
+
+            Host.Content = new WorkOrderView();
         }
+
+        /// <summary>
+        /// 화면 전환
+        /// 이 방식으로 만든 후 MVVM 적용 예정
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Nav_Click(object sender, RoutedEventArgs e)
+        {
+            var tag = (sender as Button)?.Tag as string;
+
+            Host.Content = tag switch
+            {
+                "WO" => new WorkOrderView(),
+                "BASE" => Placeholder("품목 / 설비 관리"),
+                "RESULT" => Placeholder("생산실적 조회"),
+                _ => Host.Content
+            };
+        }
+        private static UIElement Placeholder(string text) => new TextBlock
+        {
+            Text = text,
+            FontSize = 16,
+            Foreground = System.Windows.Media.Brushes.Gray,
+            HorizontalAlignment = HorizontalAlignment.Center,
+            VerticalAlignment = VerticalAlignment.Center,
+            TextAlignment = TextAlignment.Center
+        };
     }
 }

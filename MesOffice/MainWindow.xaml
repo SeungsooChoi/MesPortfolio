@@ -5,8 +5,51 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MesOffice"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        WindowStartupLocation="CenterScreen"
+        FontSize="12"
+        Title="MES 관리 시스템" Height="720" Width="1180">
+    <Window.Resources>
+        <Style x:Key="NavButton" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="#E4EAF1"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="18,9"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="bd" Background="{TemplateBinding Background}" Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Left"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="bd" Property="Background" Value="#3C4F63"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="180"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        
+        <!-- 왼쪽 메뉴 -->
+        <Border Grid.Column="0" Background="#2B3A4A">
+            <StackPanel Margin="0, 16">
+                <TextBlock Text="MES" Foreground="White" FontSize="20" Margin="18, 0, 0, 20"/>
+                <TextBlock Text="기준정보" Foreground="#8FA3B8" FontSize="12" Margin="18, 8, 0, 4"/>
+                <Button Content="품목 / 설비 관리" Tag="BASE" Style="{StaticResource NavButton}" Click="Nav_Click"/>
+                <TextBlock Text="생산관리" Foreground="#8FA3B8" FontSize="12" Margin="18, 16, 0, 4"/>
+                <Button Content="작업지시" Tag="WO" Style="{StaticResource NavButton}" Click="Nav_Click"/>
+                <Button Content="생산실적 조회" Tag="RESULT" Style="{StaticResource NavButton}" Click="Nav_Click"/>
+            </StackPanel>
+        </Border>
 
+        <ContentControl Grid.Column="1" x:Name="Host"/>
     </Grid>
 </Window>
