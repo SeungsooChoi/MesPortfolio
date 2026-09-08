@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
         FontSize="12"
-        Title="MES 관리 시스템" Height="720" Width="1180">
+        Title="MES 관리 시스템" Height="720" Width="1400">
     <Window.Resources>
         <Style x:Key="NavButton" TargetType="Button">
             <Setter Property="Background" Value="Transparent"/>

@@ -28,7 +28,7 @@ namespace MesOffice
             Host.Content = tag switch
             {
                 "WO" => new WorkOrderView(),
-                "BASE" => Placeholder("품목 / 설비 관리"),
+                "BASE" => new BaseInfoView(),
                 "RESULT" => Placeholder("생산실적 조회"),
                 _ => Host.Content
             };

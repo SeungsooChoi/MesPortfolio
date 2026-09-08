@@ -1,0 +1,173 @@
+﻿<UserControl x:Class="MesOffice.BaseInfoView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:MesOffice"
+             mc:Ignorable="d" 
+             Background="White"
+             d:DesignHeight="450" d:DesignWidth="1000">
+    <UserControl.Resources>
+
+        <Style x:Key="Lbl" TargetType="TextBlock">
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="0,0,6,0"/>
+            <Setter Property="Foreground" Value="#555"/>
+        </Style>
+
+        <Style x:Key="Fld" TargetType="Control">
+            <Setter Property="Height" Value="26"/>
+            <Setter Property="Margin" Value="0,0,14,6"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
+
+        <Style x:Key="Btn" TargetType="Button">
+            <Setter Property="Height" Value="28"/>
+            <Setter Property="MinWidth" Value="84"/>
+            <Setter Property="Margin" Value="0,0,8,0"/>
+        </Style>
+
+        <!-- 사용중지된 행은 회색으로. -->
+        <Style x:Key="MasterRow" TargetType="DataGridRow">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding UseYn}" Value="N">
+                    <Setter Property="Foreground" Value="#AAA"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+    </UserControl.Resources>
+
+    <TabControl Margin="12">
+        <!-- 품목 탭 -->
+        <TabItem Header="품목" x:Name="ItemTab">
+            <Grid Margin="10">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <DataGrid Grid.Row="0" ItemsSource="{Binding Rows}" SelectedItem="{Binding SelectedRow}" RowStyle="{StaticResource MasterRow}"
+                          AutoGenerateColumns="False" IsReadOnly="True"
+                          SelectionMode="Single" HeadersVisibility="Column"
+                          GridLinesVisibility="Horizontal" RowHeight="26">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="품목코드"   Binding="{Binding ItemCd}"      Width="110"/>
+                        <DataGridTextColumn Header="품목명"     Binding="{Binding ItemNm}"      Width="*"/>
+                        <DataGridTextColumn Header="구분"       Binding="{Binding ItemType}"    Width="60"/>
+                        <DataGridTextColumn Header="단위"       Binding="{Binding Unit}"        Width="60"/>
+                        <DataGridTextColumn Header="캐비티"     Binding="{Binding Cavity}"      Width="70"/>
+                        <DataGridTextColumn Header="C/T(초)"    Binding="{Binding StdCycleSec, StringFormat=N1}" Width="80"/>
+                        <DataGridTextColumn Header="시간당(개)" Binding="{Binding HourlyQty, StringFormat=N0}"   Width="90"/>
+                        <DataGridTextColumn Header="사용"       Binding="{Binding UseYn}"       Width="50"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+                
+                <!-- 등록 / 수정 -->
+                <Border Grid.Row="1" Background="#F5F7FA" BorderBrush="#DDE3EA"
+                        BorderThickness="1" Padding="12" Margin="0,10,0,0">
+                    <StackPanel>
+                        <WrapPanel>
+                            <TextBlock Text="품목코드" Style="{StaticResource Lbl}"/>
+                            <TextBox Width="110" Style="{StaticResource Fld}"
+                                     IsReadOnly="{Binding IsCodeLocked}"
+                                     Text="{Binding ItemCd, UpdateSourceTrigger=PropertyChanged}"/>
+
+                            <TextBlock Text="품목명" Style="{StaticResource Lbl}"/>
+                            <TextBox Width="200" Style="{StaticResource Fld}"
+                                     Text="{Binding ItemNm, UpdateSourceTrigger=PropertyChanged}"/>
+
+                            <TextBlock Text="구분" Style="{StaticResource Lbl}"/>
+                            <ComboBox Width="70" Style="{StaticResource Fld}"
+                                      ItemsSource="{Binding ItemTypes}"
+                                      SelectedItem="{Binding ItemType}"/>
+
+                            <TextBlock Text="단위" Style="{StaticResource Lbl}"/>
+                            <TextBox Width="60" Style="{StaticResource Fld}"
+                                     Text="{Binding Unit, UpdateSourceTrigger=PropertyChanged}"/>
+
+                            <TextBlock Text="캐비티" Style="{StaticResource Lbl}"/>
+                            <TextBox Width="60" Style="{StaticResource Fld}"
+                                     Text="{Binding Cavity, UpdateSourceTrigger=PropertyChanged}"/>
+
+                            <TextBlock Text="C/T(초)" Style="{StaticResource Lbl}"/>
+                            <TextBox Width="70" Style="{StaticResource Fld}"
+                                     Text="{Binding StdCycleSec, UpdateSourceTrigger=PropertyChanged}"/>
+                        </WrapPanel>
+
+                        <StackPanel Orientation="Horizontal" Margin="0,6,0,0">
+                            <Button Content="신규"   Style="{StaticResource Btn}" Command="{Binding NewCommand}"/>
+                            <Button Content="저장"   Style="{StaticResource Btn}" Command="{Binding SaveCommand}"/>
+                            <Button Content="{Binding ToggleUseText}"
+                                    Style="{StaticResource Btn}" Command="{Binding ToggleUseCommand}"/>
+                            <Button Content="조회"   Style="{StaticResource Btn}" Command="{Binding SearchCommand}"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+                <TextBlock Grid.Row="2" Text="{Binding StatusText}"
+                           Foreground="#777" Margin="2,6,0,0"/>
+            </Grid>
+        </TabItem>
+        <TabItem Header="설비" x:Name="EquipTab">
+            <Grid Margin="10">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <DataGrid Grid.Row="0"
+                          ItemsSource="{Binding Rows}"
+                          SelectedItem="{Binding SelectedRow}"
+                          RowStyle="{StaticResource MasterRow}"
+                          AutoGenerateColumns="False" IsReadOnly="True"
+                          SelectionMode="Single" HeadersVisibility="Column"
+                          GridLinesVisibility="Horizontal" RowHeight="26">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="설비코드" Binding="{Binding EquipCd}" Width="110"/>
+                        <DataGridTextColumn Header="설비명"   Binding="{Binding EquipNm}" Width="*"/>
+                        <DataGridTextColumn Header="라인"     Binding="{Binding LineCd}"  Width="70"/>
+                        <DataGridTextColumn Header="형체력(톤)" Binding="{Binding Tonnage}" Width="90"/>
+                        <DataGridTextColumn Header="사용"     Binding="{Binding UseYn}"   Width="50"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+
+                <Border Grid.Row="1" Background="#F5F7FA" BorderBrush="#DDE3EA"
+                        BorderThickness="1" Padding="12" Margin="0,10,0,0">
+                    <StackPanel>
+                        <WrapPanel>
+                            <TextBlock Text="설비코드" Style="{StaticResource Lbl}"/>
+                            <TextBox Width="110" Style="{StaticResource Fld}"
+                                     IsReadOnly="{Binding IsCodeLocked}"
+                                     Text="{Binding EquipCd, UpdateSourceTrigger=PropertyChanged}"/>
+
+                            <TextBlock Text="설비명" Style="{StaticResource Lbl}"/>
+                            <TextBox Width="200" Style="{StaticResource Fld}"
+                                     Text="{Binding EquipNm, UpdateSourceTrigger=PropertyChanged}"/>
+
+                            <TextBlock Text="라인" Style="{StaticResource Lbl}"/>
+                            <TextBox Width="70" Style="{StaticResource Fld}"
+                                     Text="{Binding LineCd, UpdateSourceTrigger=PropertyChanged}"/>
+
+                            <TextBlock Text="형체력(톤)" Style="{StaticResource Lbl}"/>
+                            <TextBox Width="80" Style="{StaticResource Fld}"
+                                     Text="{Binding Tonnage, UpdateSourceTrigger=PropertyChanged}"/>
+                        </WrapPanel>
+
+                        <StackPanel Orientation="Horizontal" Margin="0,6,0,0">
+                            <Button Content="신규" Style="{StaticResource Btn}" Command="{Binding NewCommand}"/>
+                            <Button Content="저장" Style="{StaticResource Btn}" Command="{Binding SaveCommand}"/>
+                            <Button Content="{Binding ToggleUseText}"
+                                    Style="{StaticResource Btn}" Command="{Binding ToggleUseCommand}"/>
+                            <Button Content="조회" Style="{StaticResource Btn}" Command="{Binding SearchCommand}"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+
+                <TextBlock Grid.Row="2" Text="{Binding StatusText}"
+                           Foreground="#777" Margin="2,6,0,0"/>
+            </Grid>
+        </TabItem>
+    </TabControl>
+</UserControl>
